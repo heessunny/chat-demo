@@ -62,7 +62,6 @@
                         msg.addClass('control');
                     }
 
-                    // [수정됨] 내가 보낸 메시지라면 li 태그 자체에 self 클래스 추가
                     if (obj['user'] == name) {
                         msg.addClass('self');
                     }
@@ -92,7 +91,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #e9eff5; /* 배경색 살짝 변경 */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -106,20 +105,20 @@
             color: inherit;
         }
 
-        /* Container Style */
+        /* Container Style - 너비 확장 */
         div.bordered {
             background: white;
             width: 100%;
-            max-width: 500px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* 500px -> 800px로 변경 */
+            border-radius: 20px; /* 모서리 더 둥글게 */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             position: relative;
             animation: fadeIn 0.5s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -130,46 +129,64 @@
             border: 1px solid #ef9a9a;
         }
 
-        /* Login Screen */
+        /* Login Screen (#ask) - 디자인 강화 */
         #ask {
-            padding: 40px;
+            padding: 60px 40px; /* 패딩 증가 */
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 300px;
+            height: 400px; /* 높이 증가 */
+            background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
+        }
+
+        #ask .title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         #ask input {
-            font-size: 16pt;
-            padding: 12px 15px;
-            margin: 20px 0;
-            border: 2px solid #eee;
+            font-size: 18px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
-            width: 100%;
-            transition: border-color 0.3s;
+            width: 80%; /* 너비 조정 */
+            max-width: 300px;
+            transition: all 0.3s;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         #ask input:focus {
             border-color: #4A90E2;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+            transform: translateY(-2px);
         }
 
         #ask span.join {
             display: inline-block;
-            padding: 12px 35px;
-            background-color: #4A90E2;
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
             color: white;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
-            transition: all 0.2s;
+            box-shadow: 0 5px 15px rgba(53, 122, 189, 0.4);
+            transition: all 0.3s;
         }
 
         #ask span.join:hover {
-            background-color: #357ABD;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(53, 122, 189, 0.5);
+        }
+
+        #ask span.join:active {
+            transform: translateY(1px);
         }
 
         /* Chat Channel */
@@ -183,11 +200,15 @@
         #channel div#descr {
             background-color: #4A90E2;
             color: white;
-            padding: 15px 20px;
-            font-size: 14px;
-            line-height: 1.4;
+            padding: 20px 30px;
+            font-size: 15px;
+            line-height: 1.5;
             z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #channel div#descr strong {
+            font-size: 18px;
         }
 
         #channel div#descr a {
@@ -196,32 +217,32 @@
             font-weight: bold;
         }
 
-        /* Messages Area - 핵심 변경 부분 */
+        /* Messages Area */
         div#msgs {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 30px; /* 패딩 증가 */
             background-color: #f7f9fc;
             scroll-behavior: smooth;
         }
 
-        div#msgs::-webkit-scrollbar { width: 5px; }
-        div#msgs::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 3px; }
+        div#msgs::-webkit-scrollbar { width: 6px; }
+        div#msgs::-webkit-scrollbar-thumb { background-color: #cbd5e0; border-radius: 3px; }
 
         div#msgs ul {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
-            flex-direction: column; /* 세로 정렬 */
+            flex-direction: column;
         }
 
         div#msgs li {
-            margin-bottom: 10px;
+            margin-bottom: 24px; 
             display: flex;
-            flex-direction: column; /* 이름, 메시지, 시간을 세로로 쌓기 */
-            align-items: flex-start; /* 기본: 왼쪽 정렬 (상대방) */
-            max-width: 80%; /* 메시지 최대 너비 */
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 70%; /* 말풍선 최대 너비 줄임 (가독성 위해) */
         }
 
         /* 상대방 메시지 */
@@ -229,70 +250,73 @@
             align-self: flex-start;
         }
 
-        /* 내 메시지 (오른쪽 정렬) */
+        /* 내 메시지 */
         div#msgs li.self {
             align-self: flex-end;
-            align-items: flex-end; /* 내부 요소들도 우측 정렬 */
+            align-items: flex-end;
         }
 
         /* User Name Styling */
         div#msgs li span.user {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 4px;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
             margin-left: 5px;
+            font-weight: 600;
         }
         
         div#msgs li.self span.user {
-            display: none; /* 내 이름은 굳이 보여주지 않음 (카톡 스타일) */
+            display: none;
         }
 
         /* Message Bubble Styling */
         div#msgs li span.message {
-            padding: 10px 14px;
-            border-radius: 18px;
-            font-size: 15px;
-            line-height: 1.4;
+            padding: 12px 18px; /* 패딩 증가 */
+            border-radius: 20px;
+            font-size: 16px; /* 폰트 크기 증가 */
+            line-height: 1.5;
             word-break: break-word;
             position: relative;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* 상대방 말풍선 색상 */
+        /* 상대방 말풍선 */
         div#msgs li:not(.self) span.message {
             background-color: #fff;
-            color: #333;
-            border-top-left-radius: 2px; /* 말풍선 꼬리 효과 */
+            color: #2d3748;
+            border-top-left-radius: 2px;
         }
 
-        /* 내 말풍선 색상 */
+        /* 내 말풍선 */
         div#msgs li.self span.message {
             background-color: #4A90E2;
             color: white;
-            border-top-right-radius: 2px; /* 말풍선 꼬리 효과 */
+            border-top-right-radius: 2px;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
         }
 
         /* Time Styling */
         div#msgs li span.time {
-            font-size: 10px;
-            color: #aaa;
-            margin-top: 4px;
-            margin-left: 2px;
-            margin-right: 2px;
+            font-size: 11px;
+            color: #a0aec0;
+            margin-top: 6px;
+            margin-left: 4px;
+            margin-right: 4px;
         }
 
         /* System Messages */
         div#msgs li.control {
             align-self: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
         div#msgs li.control span.message {
-            background: none;
+            background: rgba(0,0,0,0.05);
             box-shadow: none;
-            color: #999;
-            font-size: 12px;
-            padding: 0;
+            color: #718096;
+            font-size: 13px;
+            padding: 5px 15px;
+            border-radius: 15px;
         }
         div#msgs li.control span.user, 
         div#msgs li.control span.time {
@@ -301,25 +325,25 @@
 
         /* Input Area */
         div#input {
-            padding: 15px;
+            padding: 20px 30px;
             background-color: #fff;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #edf2f7;
         }
 
         div#input #message {
             width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            padding: 12px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            padding: 15px 25px;
             font-size: 16px;
-            background-color: #f9f9f9;
-            transition: all 0.2s;
+            background-color: #f7fafc;
+            transition: all 0.3s;
         }
 
         div#input #message:focus {
             border-color: #4A90E2;
             background-color: #fff;
-            box-shadow: 0 2px 5px rgba(74, 144, 226, 0.1);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
         }
     </style>
 </head>
@@ -331,15 +355,15 @@
     </div>
     
     <div id="ask" class="bordered">
-        <div style="font-size: 18px; margin-bottom: 10px; color: #666;">채팅 닉네임을 입력하세요</div>
-        <input type="text" id="name" placeholder="닉네임" autocomplete="off" /> 
-        <a href="#"><span class="join">입장하기</span></a>
+        <div class="title">환영합니다! 👋<br>채팅 닉네임을 입력해주세요</div>
+        <input type="text" id="name" placeholder="닉네임 (예: 라이언)" autocomplete="off" /> 
+        <a href="#"><span class="join">채팅 시작하기</span></a>
     </div>
 
     <div id="channel" class="bordered" style="display: none;">
         <div id="descr">
-            <strong>Chat</strong><br>
-            [프로디지털 아카데미 7기] 채팅 사이트 Demo
+            <strong>Chat Room</strong><br>
+            [프로디지털 아카데미 7기] 실시간 채팅 데모
         </div>
         <div id="msgs">
             <ul>
