@@ -7,21 +7,18 @@
     <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
     <script>
         $(document).ready(function () {
-            // 초기 상태 설정
             if (typeof WebSocket != 'undefined') {
                 $('#login-screen').addClass('active');
             } else {
                 $('#error-screen').show();
             }
 
-            // 엔터키 입력 처리
             $('#nickname-input').keydown(function (event) {
                 if (event.keyCode == 13) {
                     $('#join-btn').click();
                 }
             });
 
-            // 입장 버튼 클릭
             $('#join-btn').click(function () {
                 var name = $('#nickname-input').val().trim();
                 if(name === "") {
@@ -32,7 +29,6 @@
             });
 
             function join(name) {
-                // UI 전환
                 $('#login-screen').removeClass('active');
                 $('#chat-screen').addClass('active');
                 $('#chat-header strong').text(name + "님의 채팅");
@@ -49,8 +45,6 @@
                     if (typeof obj != 'object') return;
 
                     var action = obj['action'];
-                    
-                    // 메시지 생성
                     var msgHtml = '';
                     var time = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
 
@@ -72,12 +66,9 @@
                     }
 
                     container.append(msgHtml);
-                    
-                    // 스크롤 최하단으로 이동
                     container.scrollTop(container[0].scrollHeight);
                 }
 
-                // 메시지 전송
                 $('#input-form').submit(function (event) {
                     event.preventDefault();
                     var input = $('#message-input');
@@ -91,9 +82,8 @@
         });
     </script>
     <style>
-        /* 1. Global Reset & Fonts */
         :root {
-            --primary-color: #5B61ED; /* 세련된 퍼플 블루 */
+            --primary-color: #5B61ED;
             --bg-color: #F3F4F6;
             --chat-bg: #FFFFFF;
             --my-bubble: #5B61ED;
@@ -114,15 +104,15 @@
             overflow: hidden;
         }
 
-        /* 2. Main Container (Mobile App Style) */
+        /* 2. Main Container (Wide Style) */
         .app-container {
-            width: 100%;
-            max-width: 480px; /* 모바일 비율 유지 */
+            width: 95%; /* 화면 꽉 차게 */
+            max-width: 900px; /* 최대 너비를 900px로 증가 (데스크탑 뷰) */
             height: 90vh;
-            max-height: 850px;
+            max-height: 900px;
             background-color: var(--chat-bg);
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -147,29 +137,24 @@
             z-index: 10;
         }
 
-        .screen.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        /* Hide screen when moving out */
+        .screen.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         #login-screen { transform: scale(1.1); }
         #login-screen.active { transform: scale(1); }
 
         .logo-area { margin-bottom: 40px; text-align: center; }
-        .logo-area h1 { margin: 0; font-size: 28px; color: var(--text-main); font-weight: 800; }
-        .logo-area p { color: var(--text-sub); margin-top: 8px; }
+        .logo-area h1 { margin: 0; font-size: 32px; color: var(--text-main); font-weight: 800; }
+        .logo-area p { color: var(--text-sub); margin-top: 10px; font-size: 18px; }
 
         input[type="text"] {
             width: 100%;
-            padding: 16px 20px;
+            max-width: 400px; /* 입력창 너무 길어지지 않게 제한 */
+            padding: 18px 24px;
             border-radius: 16px;
             border: 1px solid #E5E7EB;
             background: #F9FAFB;
             font-size: 16px;
             transition: all 0.2s;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         input[type="text"]:focus {
             border-color: var(--primary-color);
@@ -179,7 +164,8 @@
 
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            max-width: 400px;
+            padding: 18px;
             border-radius: 16px;
             border: none;
             background-color: var(--primary-color);
@@ -199,9 +185,8 @@
             background-color: #fff;
         }
 
-        /* Chat Header */
         .chat-header {
-            padding: 20px 25px;
+            padding: 25px 35px;
             border-bottom: 1px solid #F3F4F6;
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(10px);
@@ -210,30 +195,27 @@
             justify-content: space-between;
             align-items: center;
         }
-        .chat-header strong { font-size: 18px; color: var(--text-main); }
-        .status-dot { width: 8px; height: 8px; background: #10B981; border-radius: 50%; }
+        .chat-header strong { font-size: 20px; color: var(--text-main); }
+        .status-dot { width: 10px; height: 10px; background: #10B981; border-radius: 50%; }
 
-        /* Messages Area */
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 30px 40px; /* 여백 증가 */
             overflow-y: auto;
             background-color: #fff;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* 메시지 간격 넓게 */
+            gap: 16px;
         }
         
-        /* Scrollbar Hide */
-        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
         .chat-messages::-webkit-scrollbar-thumb { background-color: transparent; }
-        .chat-messages:hover::-webkit-scrollbar-thumb { background-color: #ddd; border-radius: 2px; }
+        .chat-messages:hover::-webkit-scrollbar-thumb { background-color: #ddd; border-radius: 3px; }
 
-        /* Message Bubbles */
         .message {
             display: flex;
             flex-direction: column;
-            max-width: 75%;
+            max-width: 60%; /* 말풍선 너비 제한 (너무 길어지지 않게) */
             position: relative;
             animation: fadeIn 0.3s ease;
         }
@@ -241,31 +223,28 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .message .user-name {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-sub);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             margin-left: 2px;
         }
 
         .message .bubble {
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 15px;
-            line-height: 1.5;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
             position: relative;
             word-break: break-all;
         }
 
         .message .time {
-            font-size: 10px;
+            font-size: 11px;
             color: #C5C9D2;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
-        /* Other's Message (Left) */
-        .message.other {
-            align-self: flex-start;
-        }
+        .message.other { align-self: flex-start; }
         .message.other .bubble {
             background-color: var(--other-bubble);
             color: var(--text-main);
@@ -273,35 +252,26 @@
         }
         .message.other .time { margin-left: 4px; }
 
-        /* My Message (Right) */
-        .message.self {
-            align-self: flex-end;
-            align-items: flex-end;
-        }
+        .message.self { align-self: flex-end; align-items: flex-end; }
         .message.self .bubble {
             background-color: var(--my-bubble);
             color: white;
             border-top-right-radius: 4px;
-            box-shadow: 0 4px 15px rgba(91, 97, 237, 0.2); /* 은은한 그림자 */
+            box-shadow: 0 4px 15px rgba(91, 97, 237, 0.2);
         }
         .message.self .time { margin-right: 4px; text-align: right; }
 
-        /* Control Message */
-        .control-message {
-            text-align: center;
-            margin: 10px 0;
-        }
+        .control-message { text-align: center; margin: 15px 0; }
         .control-message span {
             background-color: #F3F4F6;
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-sub);
         }
 
-        /* Input Area (Floating Style) */
         .input-area {
-            padding: 20px;
+            padding: 25px 35px;
             background: #fff;
             position: relative;
         }
@@ -309,8 +279,8 @@
         .input-wrapper {
             display: flex;
             background: #F9FAFB;
-            padding: 8px;
-            border-radius: 25px;
+            padding: 10px;
+            border-radius: 30px;
             border: 1px solid #E5E7EB;
             align-items: center;
             transition: border-color 0.2s;
@@ -319,15 +289,15 @@
         .input-wrapper:focus-within {
             border-color: var(--primary-color);
             background: #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
         .input-wrapper input {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 10px 15px;
-            font-size: 15px;
+            padding: 12px 20px;
+            font-size: 16px;
             margin: 0;
             box-shadow: none;
         }
@@ -337,15 +307,16 @@
             background: var(--primary-color);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background 0.2s;
-            font-size: 18px;
+            font-size: 20px;
+            margin-right: 2px;
         }
         .send-btn:hover { background: #484ED0; }
 
@@ -357,8 +328,8 @@
         
         <div id="login-screen" class="screen">
             <div class="logo-area">
-                <h1>Hello! 👋</h1>
-                <p>입장하실 닉네임을 입력해주세요</p>
+                <h1>Welcome 👋</h1>
+                <p>채팅에 참여할 닉네임을 입력하세요</p>
             </div>
             <input type="text" id="nickname-input" placeholder="닉네임 입력" autocomplete="off">
             <button id="join-btn" class="btn-primary">입장하기</button>
@@ -377,7 +348,7 @@
             <div class="input-area">
                 <form id="input-form">
                     <div class="input-wrapper">
-                        <input type="text" id="message-input" placeholder="메시지를 입력하세요..." autocomplete="off">
+                        <input type="text" id="message-input" placeholder="메세지를 입력하세요..." autocomplete="off">
                         <button type="submit" class="send-btn">➤</button>
                     </div>
                 </form>
